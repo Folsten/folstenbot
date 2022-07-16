@@ -1,6 +1,6 @@
 require('dotenv').config();
 const Discord = require("discord.js");
-const generateStoreEntryMessage = require('./components/generateStoreEntryMessage.js');
+const commands = require('./controllers/commands');
 
 const client = new Discord.Client({
     intents: [
@@ -10,13 +10,13 @@ const client = new Discord.Client({
 })
 
 client.on("ready", () => {
-    console.log(`Logged in as ${client.user.tag}`)
-    generateStoreEntryMessage(client, '992434513496002671')
+    console.log(`Logged in as ${client.user.tag}`);
 })
 
 client.on('interactionCreate', interaction => {
-	// if (!interaction.isButton()) return;
-	console.log(interaction);
+    if (interaction.isCommand()) {
+        commands(client, interaction)
+    };
 });
 
 client.login(process.env.TOKEN)
